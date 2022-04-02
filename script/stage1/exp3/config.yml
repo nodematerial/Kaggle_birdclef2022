@@ -1,0 +1,110 @@
+DEBUG : False
+seed : 42
+epochs : 15
+train : True
+folds : [0]
+img_size : 224
+main_metric : "f1_at_01"
+minimize_metric : False
+train_datadir : "../../../input/birdclef-2022/train_audio"
+train_csv : "../../../input/birdclef-2022/train_metadata.csv"
+
+project_name : "birdclef2022_stage1"
+second_label : True
+
+transforms : {
+    "train": [{"name": "Normalize"}],
+    "valid": [{"name": "Normalize"}],
+    "test": [{"name": "Normalize"}]
+}
+period : 20
+n_mels : 128
+fmin : 20
+fmax : 16000
+n_fft : 2048
+hop_length : 512
+sample_rate : 32000
+melspectrogram_parameters : {
+    "n_mels": 224,
+    "fmin": 20,
+    "fmax": 16000
+}
+
+target_columns : [
+    "afrsil1","akekee","akepa1","akiapo","akikik","amewig","aniani","apapan",
+    "arcter","barpet","bcnher","belkin1","bkbplo","bknsti","bkwpet","blkfra",
+    "blknod","bongul","brant","brnboo","brnnod","brnowl","brtcur","bubsan",
+    "buffle","bulpet","burpar","buwtea","cacgoo1","calqua","cangoo","canvas",
+    "caster1","categr","chbsan","chemun","chukar","cintea","comgal1","commyn",
+    "compea","comsan","comwax","coopet","crehon","dunlin","elepai","ercfra",
+    "eurwig","fragul","gadwal","gamqua","glwgul","gnwtea","golphe","grbher3",
+    "grefri","gresca","gryfra","gwfgoo","hawama","hawcoo","hawcre","hawgoo",
+    "hawhaw","hawpet1","hoomer","houfin","houspa","hudgod","iiwi","incter1",
+    "jabwar","japqua","kalphe","kauama","laugul","layalb","lcspet","leasan",
+    "leater1","lessca","lesyel","lobdow","lotjae","madpet","magpet1","mallar3",
+    "masboo","mauala","maupar","merlin","mitpar","moudov","norcar","norhar2",
+    "normoc","norpin","norsho","nutman","oahama","omao","osprey","pagplo",
+    "palila","parjae","pecsan","peflov","perfal","pibgre","pomjae","puaioh",
+    "reccar","redava","redjun","redpha1","refboo","rempar","rettro","ribgul",
+    "rinduc","rinphe","rocpig","rorpar","rudtur","ruff","saffin","sander",
+    "semplo","sheowl","shtsan","skylar","snogoo","sooshe","sooter1","sopsku1",
+    "sora","spodov","sposan","towsol","wantat1","warwhe1","wesmea","wessan",
+    "wetshe","whfibi","whiter","whttro","wiltur","yebcar","yefcan","zebdov",
+] 
+
+scored_birds :  {
+    "akiapo" : 0, "aniani" : 1, "apapan" : 2, "barpet" : 3, "crehon" : 4,
+    "elepai" : 5, "ercfra" : 6, "hawama" : 7, "hawcre": 8, "hawgoo" : 9, "hawhaw" : 10, 
+    "hawpet1" : 11, "houfin" : 12, "iiwi" :13, "jabwar" : 14,"maupar" : 15, "omao" : 16,
+    "puaioh" : 17, "skylar" : 18, "warwhe1" : 19, "yefcan" : 20
+    }
+
+loader_params : {
+    "train": {
+        "batch_size": 16,
+        "num_workers": 2,
+        "shuffle": True
+    },
+    "valid": {
+        "batch_size": 64,
+        "num_workers": 4,
+        "shuffle": False
+    }
+}
+
+split : "StratifiedKFold"
+split_params : {
+    "n_splits": 5,
+    "shuffle": True,
+    "random_state": 1213
+}
+
+base_model_name : "tf_efficientnet_b4_ns"
+pooling : "max"
+pretrained : True
+num_classes : 152
+in_channels : 1
+
+loss_name : "BCEFocal2WayLoss"
+
+loss_params: {}
+
+optimizer_name : "Adam"
+base_optimizer : "Adam"
+optimizer_params : {
+    "lr": 0.0008
+}
+
+base_optimizer : "Adam"
+scheduler_name : "CosineAnnealingLR"
+scheduler_params : {
+    "T_max": 15
+}
+
+# SAM
+#optimizer_name : "SAM"
+#base_optimizer : "Adam"
+#optimizer_params : {
+#    "lr": 0.0008, 
+#    "momentum"=0.9
+#}

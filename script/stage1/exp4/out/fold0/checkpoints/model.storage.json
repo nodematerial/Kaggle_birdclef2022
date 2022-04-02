@@ -1,0 +1,13 @@
+{
+  "logdir": "out/fold0/checkpoints",
+  "topk": 1,
+  "loader_key": "valid",
+  "metric_key": "f1_at_01",
+  "minimize": false,
+  "storage": [
+    {
+      "logpath": "out/fold0/checkpoints/model.0045.pth",
+      "metric": 0.6859519580433707
+    }
+  ]
+}

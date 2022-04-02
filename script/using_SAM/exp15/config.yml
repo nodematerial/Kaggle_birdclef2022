@@ -1,0 +1,97 @@
+DEBUG : False
+seed : 42
+epochs : 45
+train : True
+folds : [0]
+img_size : 224
+train_datadir : "../../../input/birdclef-2022/train_audio"
+train_csv : "../../../input/birdclef-2022/train_metadata.csv"
+psuedo_csv : "../../../input/birdclef-2022/psuedo_0.15.csv"
+logdir : "out"
+thresholds : [0.08, 0.1, 0.15]
+main_thresh_id : 1
+wandb : True
+
+project_name : "birdclef2022_using_SAM"
+second_label : True
+psuedo_label : False
+
+transforms : {
+    "train": [{"name": "Normalize"}, {"name": "GaussianNoise"}],
+    "valid": [{"name": "Normalize"}, {"name": "GaussianNoise"}],
+}
+period : 60
+n_mels : 128
+fmin : 20
+fmax : 16000
+n_fft : 2048
+hop_length : 512
+sample_rate : 32000
+mix_p : 0.2
+mix_alpha : 0.4
+melspectrogram_parameters : {
+    "n_mels": 224,
+    "fmin": 20,
+    "fmax": 16000
+}
+
+target_columns : [
+    "akiapo", "aniani", "apapan", "barpet", "crehon" ,
+    "elepai", "ercfra", "hawama", "hawcre", "hawgoo", "hawhaw", 
+    "hawpet1", "houfin", "iiwi", "jabwar","maupar" , "omao",
+    "puaioh", "skylar", "warwhe1", "yefcan"
+] 
+
+scored_birds :  {
+    "akiapo" : 0, "aniani" : 1, "apapan" : 2, "barpet" : 3, "crehon" : 4,
+    "elepai" : 5, "ercfra" : 6, "hawama" : 7, "hawcre": 8, "hawgoo" : 9, "hawhaw" : 10, 
+    "hawpet1" : 11, "houfin" : 12, "iiwi" :13, "jabwar" : 14,"maupar" : 15, "omao" : 16,
+    "puaioh" : 17, "skylar" : 18, "warwhe1" : 19, "yefcan" : 20
+    }
+
+# Dataloader_parameters
+loader_params : {
+    "train": {
+        "batch_size": 20,
+        "num_workers": 24,
+        "shuffle": True
+    },
+    "valid": {
+        "batch_size": 20,
+        "num_workers": 24,
+        "shuffle": False
+    }
+}
+
+# split_way
+split : "StratifiedKFold"
+split_params : {
+    "n_splits": 5,
+    "shuffle": True,
+    "random_state": 42
+}
+
+# model
+base_model_name : "tf_efficientnet_b0_ns"
+pooling : "max"
+pretrained : True
+load_weight : False 
+num_classes : 21
+in_channels : 1
+
+# loss
+loss_name : "BCEFocal2WayLoss"
+loss_params: {}
+
+# optimizer
+optimizer_name : "SAM"
+base_optimizer : "Adam"
+optimizer_params : {
+    "lr": 0.0006, 
+}
+
+# scheduler
+scheduler_name : "CosineAnnealingLR"
+scheduler_params : {
+    "T_max": 45
+}

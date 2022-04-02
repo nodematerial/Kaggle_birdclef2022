@@ -1,0 +1,101 @@
+DEBUG : False
+seed : 42
+epochs : 45
+train : True
+folds : [0]
+img_size : 224
+train_datadir : "../../../input/birdclef-2022/train_audio"
+train_csv : "../../../input/birdclef-2022/train_metadata.csv"
+logdir : "out"
+thresholds : [0.1, 0.2, 0.3, 0.4]
+main_thresh_id : 1
+project_name : "birdclef2022_arcface"
+second_label : True
+wandb : True
+
+transforms : {
+    "train": [{"name": "Normalize"}, {"name": "GaussianNoise"}, {"name": "RandomVolume"}],
+    "valid": [{"name": "Normalize"}, {"name": "GaussianNoise"}, {"name": "RandomVolume"}],
+}
+period : 5
+n_mels : 128
+fmin : 20
+fmax : 16000
+n_fft : 2048
+hop_length : 512
+sample_rate : 32000
+mix_p : 0.2
+mix_alpha : 0.4
+melspectrogram_parameters : {
+    "n_mels": 224,
+    "fmin": 20,
+    "fmax": 16000
+}
+
+target_columns : [
+    "akiapo", "aniani", "apapan", "barpet", "crehon" ,
+    "elepai", "ercfra", "hawama", "hawcre", "hawgoo", "hawhaw", 
+    "hawpet1", "houfin", "iiwi", "jabwar","maupar" , "omao",
+    "puaioh", "skylar", "warwhe1", "yefcan", "nocall"
+] 
+
+scored_birds :  {
+    "akiapo" : 0, "aniani" : 1, "apapan" : 2, "barpet" : 3, "crehon" : 4,
+    "elepai" : 5, "ercfra" : 6, "hawama" : 7, "hawcre": 8, "hawgoo" : 9, "hawhaw" : 10, 
+    "hawpet1" : 11, "houfin" : 12, "iiwi" :13, "jabwar" : 14,"maupar" : 15, "omao" : 16,
+    "puaioh" : 17, "skylar" : 18, "warwhe1" : 19, "yefcan" : 20, "nocall" : 21
+    }
+
+# Dataloader_parameters
+loader_params : {
+    "train": {
+        "batch_size": 32,
+        "num_workers": 24,
+        "shuffle": True
+    },
+    "valid": {
+        "batch_size": 32,
+        "num_workers": 24,
+        "shuffle": False
+    }
+}
+
+# split_way
+split : "StratifiedKFold"
+split_params : {
+    "n_splits": 5,
+    "shuffle": True,
+    "random_state": 1213
+}
+
+# model
+base_model_name : "tf_efficientnet_b0_ns"
+pooling : "max"
+pretrained : True
+load_weight : False 
+num_classes : 22
+in_channels : 1
+
+# loss
+loss_name : "CrossEntropyLoss"
+loss_params: {}
+
+# optimizer
+optimizer_name : "Adam"
+base_optimizer : "Adam"
+optimizer_params : {
+    "lr": 0.001, 
+}
+
+# scheduler
+scheduler_name : "CosineAnnealingLR"
+scheduler_params : {
+    "T_max": 45
+}
+
+# ArcFace Hyperparameters
+s : 30.0 
+m : 0.50
+ls_eps : 0.0
+
+memo : Using deep metric learning
