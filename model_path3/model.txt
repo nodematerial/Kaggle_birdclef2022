@@ -1,7 +1,0 @@
-0: tf_efficientnet_b0_ns"
-1: resnet101d
-3: tf_efficientnet_b4_ns"
-4: resnet152d
-5: resnext50d_32x4d
-7: resnet101d
-9 resnext
